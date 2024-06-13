@@ -35,14 +35,21 @@
         <profile>
             <id>ui</id>
             <activation>
+                <!-- 这个部分配置了该profile在默认情况下是激活的，即使没有明确指定profile id，这个profile也会被激活。 -->
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <!-- build用于配置构建相关的信息 -->
             <build>
+                <!-- 这里定义了两个资源（resource） -->
                 <resources>
                     <resource>
+                        <!-- targetPath 指定了资源文件在构建过程中被复制到的目标位置。在这里，目标路径是${basedir}/target/dist。 -->
                         <targetPath>${basedir}/target/dist</targetPath>
+                        <!-- 如果设置为 true，Maven会在复制资源文件时进行过滤替换（例如，替换 ${} 中的变量）。 -->
                         <filtering>true</filtering>
+                        <!-- directory 指定了资源文件的源目录。在这里，源目录是${basedir}，即项目的根目录。 -->
                         <directory>${basedir}</directory>
+                        <!-- includes 定义了要包含在资源处理中的文件。在这里，只包含 dubbo-admin-info.json 文件。 -->
                         <includes>
                             <include>dubbo-admin-info.json</include>
                         </includes>

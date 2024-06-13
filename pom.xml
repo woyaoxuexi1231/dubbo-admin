@@ -161,21 +161,28 @@
                 <artifactId>flatten-maven-plugin</artifactId>
                 <version>${maven-flatten-version}</version>
                 <configuration>
+                    <!-- 设置为 true 表示在执行 flatten 操作时更新 POM 文件。 -->
                     <updatePomFile>true</updatePomFile>
+                    <!-- 设置为 resolveCiFriendliesOnly，表示在扁平化过程中仅解析 CI 友好变量（如 ${revision}、${sha1} 和 ${changelist}）。 -->
                     <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <!-- 设置为 expand 表示在扁平化过程中展开依赖项。 -->
                     <pomElements>
                         <dependencies>expand</dependencies>
                     </pomElements>
                 </configuration>
                 <executions>
                     <execution>
+                        <!-- 执行扁平化操作 -->
                         <id>flatten</id>
+                        <!-- 指定要执行的目标，这里是 flatten。 -->
                         <goals>
                             <goal>flatten</goal>
                         </goals>
+                        <!-- 指定在构建生命周期的哪个阶段执行这个目标，这里是在 process-resources 阶段。 -->
                         <phase>process-resources</phase>
                     </execution>
                     <execution>
+                        <!-- 清理操作 -->
                         <id>flatten.clean</id>
                         <goals>
                             <goal>clean</goal>
@@ -184,6 +191,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 主要用于生成代码覆盖率报告 -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -220,7 +228,9 @@
                 <executions>
                     <execution>
                         <goals>
+                            <!-- 这个目标会对 pom.xml 文件进行排序，根据插件的配置，按照一定的规则对元素进行排列。 -->
                             <goal>sort</goal>
+                            <!-- 这个目标会对 pom.xml 文件进行清理，移除不必要的空行，并进行格式化，使文件更加整洁。 -->
                             <goal>clean</goal>
                         </goals>
                     </execution>
@@ -233,14 +243,17 @@
         <profile>
             <id>checkstyle</id>
             <activation>
+                <!-- 这个条件指定了当 Maven 使用的 JDK 版本在 1.8 及以上时，自动激活这个 Profile。具体来说，[1.8,) 表示从 JDK 1.8 到任何更高的版本（不包括下界，即包含 1.8 及更高的版本）。 -->
                 <jdk>[1.8,)</jdk>
             </activation>
             <build>
                 <plugins>
                     <plugin>
+                        <!-- 配置了 maven-checkstyle-plugin 插件，用于执行代码风格检查。 -->
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <version>${maven-checkstyle-plugin-version}</version>
+                        <!-- 定义了插件所需的依赖项。在这个例子中，插件依赖于 com.puppycrawl.tools 下的 checkstyle 库，版本为 8.18。 -->
                         <dependencies>
                             <dependency>
                                 <groupId>com.puppycrawl.tools</groupId>
@@ -248,23 +261,31 @@
                                 <version>8.18</version>
                             </dependency>
                         </dependencies>
+                        <!-- 定义了插件的执行配置，包括执行阶段、目标和配置参数。 -->
                         <executions>
                             <execution>
                                 <id>checkstyle-validation</id>
                                 <goals>
+                                    <!-- 定义了要执行的目标。在这个例子中，目标是 check，即运行 Checkstyle 检查。 -->
                                     <goal>check</goal>
                                 </goals>
+                                <!-- 指定了插件执行的生命周期阶段。在这里是 validate 阶段，这意味着在构建的验证阶段运行 Checkstyle 检查。 -->
                                 <phase>validate</phase>
                                 <configuration>
+                                    <!-- 指定 Checkstyle 配置文件的位置。 -->
                                     <configLocation>codestyle/checkstyle.xml</configLocation>
+                                    <!-- 设置文件编码为 UTF-8。 -->
                                     <encoding>UTF-8</encoding>
+                                    <!-- 启用控制台输出，使检查结果显示在控制台中。 -->
                                     <consoleOutput>true</consoleOutput>
+                                    <!-- 当发现违规时，构建失败。 -->
                                     <failOnViolation>true</failOnViolation>
                                 </configuration>
                             </execution>
                         </executions>
                     </plugin>
                     <plugin>
+                        <!-- apache-rat-plugin 是一个用于自动化验证项目文件许可和版权声明的 Maven 插件 -->
                         <groupId>org.apache.rat</groupId>
                         <artifactId>apache-rat-plugin</artifactId>
                         <version>0.12</version>
