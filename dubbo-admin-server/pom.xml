@@ -246,13 +246,16 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.0.2.RELEASE</version>
                 <configuration>
+                    <!-- 指定打包布局为 ZIP 格式。Spring Boot 支持多种布局，如 JAR、WAR 和 ZIP。这里选择了 ZIP 以生成一个 ZIP 包。 -->
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
                     <execution>
+                        <!-- 定义了要执行的目标。在这个例子中，目标是 repackage，即重新打包应用程序，把所有依赖和项目打包成一个可执行的 JAR 或 ZIP 文件。 -->
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                        <!-- 指定在 package 阶段执行，即在 Maven 的 package 阶段自动执行重新打包操作。 -->
                         <phase>package</phase>
                     </execution>
                 </executions>
@@ -267,6 +270,7 @@
                         </goals>
                         <phase>verify</phase>
                         <configuration>
+                            <!-- 有一个 copy 任务，该任务定义了要执行的文件拷贝操作。 -->
                             <tasks>
                                 <copy file="target/dubbo-admin-server-${project.version}.jar" tofile="../dubbo-admin-distribution/target/dubbo-admin-${project.version}.jar"></copy>
                             </tasks>
